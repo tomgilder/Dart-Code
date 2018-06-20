@@ -1,14 +1,14 @@
 import * as vs from "vscode";
 import { activate, ensureTestContentWithCursorPos, ext, rangeOf, select, setTestContent, waitForEditorChange } from "../../helpers";
 
-describe("complete statement", () => {
+describe.only("complete statement", () => {
 	beforeEach(() => activate());
 	beforeEach("skip if not got complete statement fix", function () {
 		if (!ext.exports.analyzerCapabilities.hasCompleteStatementFix)
 			this.skip();
 	});
 
-	it("completes a simple print", async () => {
+	it.only("completes a simple print", async () => {
 		await setTestContent(`
 main() {
   print("test
@@ -25,7 +25,7 @@ main() {
 		`);
 	});
 
-	it("completes an if statement", async () => {
+	it.only("completes an if statement", async () => {
 		await setTestContent(`
 main() {
   if (true
