@@ -194,7 +194,7 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 	const formattingEditProvider = isUsingLsp ? undefined : new DartFormattingEditProvider(analyzer);
 	const completionItemProvider = isUsingLsp ? undefined : new DartCompletionItemProvider(analyzer);
 	const referenceProvider = isUsingLsp ? undefined : new DartReferenceProvider(analyzer);
-	const documentHighlightProvider = new DartDocumentHighlightProvider(analyzer);
+	const documentHighlightProvider = isUsingLsp ? undefined : new DartDocumentHighlightProvider(analyzer);
 	const assistCodeActionProvider = isUsingLsp ? undefined : new AssistCodeActionProvider(analyzer);
 	const fixCodeActionProvider = isUsingLsp ? undefined : new FixCodeActionProvider(analyzer);
 	const refactorCodeActionProvider = isUsingLsp ? undefined : new RefactorCodeActionProvider(analyzer);
@@ -221,7 +221,8 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 			context.subscriptions.push(vs.languages.registerDefinitionProvider(filter, referenceProvider));
 			context.subscriptions.push(vs.languages.registerReferenceProvider(filter, referenceProvider));
 		}
-		context.subscriptions.push(vs.languages.registerDocumentHighlightProvider(filter, documentHighlightProvider));
+		if (documentHighlightProvider)
+			context.subscriptions.push(vs.languages.registerDocumentHighlightProvider(filter, documentHighlightProvider));
 		if (assistCodeActionProvider)
 			context.subscriptions.push(vs.languages.registerCodeActionsProvider(filter, assistCodeActionProvider, assistCodeActionProvider.metadata));
 		if (fixCodeActionProvider)
