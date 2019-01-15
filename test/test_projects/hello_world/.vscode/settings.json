@@ -7,5 +7,10 @@
 	],
 	"dart.analysisExcludedFolders": [
 		"lib/excluded"
-	]
+	],
+	"dart.previewLsp": true,
+	"dart.previewLspVmArgs": [
+		"/Users/dantup/Dev/Google/dart-sdk/sdk/pkg/analysis_server/bin/server.dart",
+		"--lsp",
+	],
 }
