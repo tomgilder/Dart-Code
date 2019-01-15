@@ -197,7 +197,7 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 	const refactorCodeActionProvider = isUsingLsp ? undefined : new RefactorCodeActionProvider(analyzer);
 	const sourceCodeActionProvider = isUsingLsp ? undefined : new SourceCodeActionProvider(analyzer);
 	const ignoreLintCodeActionProvider = new IgnoreLintCodeActionProvider(analyzer);
-	const renameProvider = new DartRenameProvider(analyzer);
+	const renameProvider = isUsingLsp ? undefined : new DartRenameProvider(analyzer);
 	const implementationProvider = new DartImplementationProvider(analyzer);
 
 	const activeFileFilters = [DART_MODE];
@@ -226,7 +226,8 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 			context.subscriptions.push(vs.languages.registerCodeActionsProvider(filter, fixCodeActionProvider, fixCodeActionProvider.metadata));
 		if (refactorCodeActionProvider)
 			context.subscriptions.push(vs.languages.registerCodeActionsProvider(filter, refactorCodeActionProvider, refactorCodeActionProvider.metadata));
-		context.subscriptions.push(vs.languages.registerRenameProvider(filter, renameProvider));
+		if (renameProvider)
+			context.subscriptions.push(vs.languages.registerRenameProvider(filter, renameProvider));
 	});
 
 	// Some actions only apply to Dart.
