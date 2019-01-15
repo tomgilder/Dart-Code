@@ -3,7 +3,8 @@
 	"dart.maxLogLineLength": 20000,
 	"dart.previewLsp": true,
 	"dart.previewLspVmArgs": [
-		"/Users/dantup/Dev/Google/dart-sdk/sdk/pkg/analysis_server/bin/server.dart",
+		// "/Users/dantup/Dev/Google/dart-sdk/sdk/pkg/analysis_server/bin/server.dart",
+		"bin/snapshots/analysis_server.dart.snapshot",
 		"--lsp",
 	],
 }

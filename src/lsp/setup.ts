@@ -98,7 +98,7 @@ function spawn(sdks: util.Sdks): Thenable<StreamInfo> {
 	const vmPath = path.join(sdks.dart, dartVMPath);
 	const args = config.previewLspArgs;
 
-	const process = safeSpawn(undefined, vmPath, args);
+	const process = safeSpawn(sdks.dart, vmPath, args);
 
 	console.log(vmPath);
 	console.log(args);
