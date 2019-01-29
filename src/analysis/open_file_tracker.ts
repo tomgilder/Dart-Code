@@ -76,6 +76,14 @@ export class OpenFileTracker implements IAmDisposable {
 		} catch (e) {
 			logError(e);
 		}
+
+		if (this.analyzer.capabilities.supportsFlutterOutline) {
+			this.analyzer.flutterSetSubscriptions({
+				subscriptions: {
+					OUTLINE: openFiles,
+				},
+			});
+		}
 	}
 
 	private pathsHaveChanged(last: string[], current: string[]) {

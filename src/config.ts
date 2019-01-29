@@ -73,6 +73,7 @@ class Config {
 	get previewBuildRunnerTasks() { return this.getConfig<boolean>("previewBuildRunnerTasks"); }
 	get previewToStringInDebugViews() { return this.getConfig<boolean>("previewToStringInDebugViews"); }
 	get promptToRunIfErrors() { return this.getConfig<boolean>("promptToRunIfErrors"); }
+	get previewFlutterOutline() { return this.getConfig<boolean>("previewFlutterOutline"); }
 
 	public for(uri?: Uri): ResourceConfig {
 		return new ResourceConfig(uri);
