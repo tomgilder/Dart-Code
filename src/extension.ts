@@ -14,6 +14,7 @@ import { DartExtensionApi } from "./api";
 import { TestCodeLensProvider } from "./code_lens/test_code_lens_provider";
 import { DebugCommands } from "./commands/debug";
 import { EditCommands } from "./commands/edit";
+import { FlutterOutlineCommands } from "./commands/flutter_outline";
 import { GoToSuperCommand } from "./commands/go_to_super";
 import { LoggingCommands } from "./commands/logging";
 import { OpenInOtherEditorCommands } from "./commands/open_in_other_editors";
@@ -61,6 +62,7 @@ import { showUserPrompts } from "./user_prompts";
 import * as util from "./utils";
 import { fsPath } from "./utils";
 import { addToLogHeader, clearLogHeader, getExtensionLogPath, log, logError, logTo } from "./utils/log";
+import { FlutterOutlineProvider } from "./views/flutter_outline_view";
 import { DartPackagesProvider } from "./views/packages_view";
 import { TestResultsProvider } from "./views/test_view";
 
@@ -300,6 +302,21 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 		});
 
 		context.subscriptions.push(new OpenFileTracker(analyzer));
+
+		if (config.previewFlutterOutline && analyzer.capabilities.supportsFlutterOutline) {
+			const treeDataProvider = new FlutterOutlineProvider(analyzer);
+			const tree = vs.window.createTreeView("dartFlutterOutline", { treeDataProvider });
+
+			context.subscriptions.push(vs.window.onDidChangeTextEditorSelection((e) => {
+				if (e.selections && e.selections.length) {
+					const node = treeDataProvider.getNodeAt(e.textEditor.document.uri, e.selections[0].start);
+					if (node)
+						tree.reveal(node);
+				}
+			}));
+			context.subscriptions.push(tree);
+			context.subscriptions.push(treeDataProvider);
+		}
 	});
 
 	// Handle config changes so we can reanalyze if necessary.
@@ -318,6 +335,7 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 	const pubGlobal = new PubGlobal(sdks);
 	const sdkCommands = new SdkCommands(context, sdks, pubGlobal, flutterCapabilities, flutterDaemon && flutterDaemon.deviceManager);
 	const debug = new DebugCommands(context, analytics);
+	const flutterOutlineCommands = new FlutterOutlineCommands(context);
 
 	// Register URI handler.
 	context.subscriptions.push(vs.window.registerUriHandler(new DartUriHandler(flutterCapabilities)));
@@ -333,7 +351,7 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 	context.subscriptions.push(new OpenInOtherEditorCommands(sdks));
 	context.subscriptions.push(new TestCommands());
 
-	// Register our view providers.
+	// Register our dependency tree provider.
 	const dartPackagesProvider = new DartPackagesProvider();
 	dartPackagesProvider.setWorkspaces(util.getDartWorkspaceFolders());
 	context.subscriptions.push(dartPackagesProvider);
@@ -557,7 +575,8 @@ function getSettingsThatRequireRestart() {
 		+ config.showTestCodeLens
 		+ config.previewHotReloadCoverageMarkers
 		+ config.previewBuildRunnerTasks
-		+ config.triggerSignatureHelpAutomatically;
+		+ config.triggerSignatureHelpAutomatically
+		+ config.previewFlutterOutline;
 }
 
 export async function deactivate(isRestart: boolean = false): Promise<void> {

@@ -43,6 +43,8 @@ export class EditCommands implements vs.Disposable {
 	}
 
 	private showCode(editor: vs.TextEditor, displayRange: vs.Range, highlightRange: vs.Range, selectionRange?: vs.Range): void {
+		vs.window.showTextDocument(editor.document);
+
 		if (selectionRange)
 			editor.selection = new vs.Selection(selectionRange.start, selectionRange.end);
 
