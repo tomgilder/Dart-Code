@@ -86,7 +86,7 @@ let analytics: Analytics;
 let showTodos: boolean | undefined;
 let previousSettings: string;
 let extensionLogger: { dispose: () => Promise<void> | void };
-let isUsingLsp = false;
+export let isUsingLsp = false;
 
 export function activate(context: vs.ExtensionContext, isRestart: boolean = false) {
 	if (!extensionLogger)

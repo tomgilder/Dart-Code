@@ -1,5 +1,6 @@
 import { Disposable, TextDocument, Uri, window, workspace } from "vscode";
 import { IAmDisposable } from "../debug/utils";
+import { isUsingLsp } from "../extension";
 import { locateBestProjectRoot } from "../project";
 import * as util from "../utils";
 import { fsPath } from "../utils";
@@ -68,8 +69,8 @@ export class OpenFileTracker implements IAmDisposable {
 			await this.analyzer.analysisSetSubscriptions({
 				subscriptions: {
 					CLOSING_LABELS: this.analyzer.capabilities.supportsClosingLabels ? openFiles : undefined,
-					FOLDING: openFiles,
-					OCCURRENCES: openFiles,
+					FOLDING: isUsingLsp ? undefined : openFiles,
+					OCCURRENCES: isUsingLsp ? undefined : openFiles,
 					OUTLINE: openFiles,
 				},
 			});
