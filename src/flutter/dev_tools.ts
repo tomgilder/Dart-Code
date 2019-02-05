@@ -25,7 +25,7 @@ export class FlutterDevTools implements vs.Disposable {
 	/// concurrent launches can wait on the same promise.
 	private devtoolsUrl: Thenable<string>;
 
-	constructor(private sdks: Sdks, private analytics: Analytics, private pubGlobal: PubGlobal) { }
+	constructor(private extensionPath: string, private sdks: Sdks, private analytics: Analytics, private pubGlobal: PubGlobal) { }
 
 	public async spawnForSession(session: DartDebugSessionInformation): Promise<void> {
 		this.analytics.logDebuggerOpenDevTools();
@@ -50,6 +50,17 @@ export class FlutterDevTools implements vs.Disposable {
 			this.devToolsStatusBarItem.command = "dart.openDevTools";
 			this.devToolsStatusBarItem.show();
 			openInBrowser(`${url}?port=${observatoryPort}`);
+			const panel = vs.window.createWebviewPanel(
+				"dartDevTools",
+				"Dart DevTools",
+				vs.ViewColumn.One,
+				{
+					enableScripts: true,
+					localResourceRoots: [vs.Uri.file(path.join(this.extensionPath, "resources/devtools"))],
+				},
+			);
+			panel.webview.html = `<iframe src="${url}?port=${observatoryPort}" width="100%" height="900"></frame>`;
+
 		} catch (e) {
 			this.devToolsStatusBarItem.hide();
 			vs.window.showErrorMessage(`${e}`);
