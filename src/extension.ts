@@ -62,7 +62,6 @@ import { showUserPrompts } from "./user_prompts";
 import * as util from "./utils";
 import { fsPath } from "./utils";
 import { addToLogHeader, clearLogHeader, getExtensionLogPath, log, logError, logTo } from "./utils/log";
-import { FlutterOutlineProvider } from "./views/flutter_outline_view";
 import { DartPackagesProvider } from "./views/packages_view";
 import { TestResultsProvider } from "./views/test_view";
 
@@ -303,20 +302,20 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 
 		context.subscriptions.push(new OpenFileTracker(analyzer));
 
-		if (config.previewFlutterOutline && analyzer.capabilities.supportsFlutterOutline) {
-			const treeDataProvider = new FlutterOutlineProvider(analyzer);
-			const tree = vs.window.createTreeView("dartFlutterOutline", { treeDataProvider });
+		// if (config.previewFlutterOutline && analyzer.capabilities.supportsFlutterOutline) {
+		// 	const treeDataProvider = new FlutterOutlineProvider(analyzer);
+		// 	const tree = vs.window.createTreeView("dartFlutterOutline", { treeDataProvider });
 
-			context.subscriptions.push(vs.window.onDidChangeTextEditorSelection((e) => {
-				if (e.selections && e.selections.length) {
-					const node = treeDataProvider.getNodeAt(e.textEditor.document.uri, e.selections[0].start);
-					if (node)
-						tree.reveal(node);
-				}
-			}));
-			context.subscriptions.push(tree);
-			context.subscriptions.push(treeDataProvider);
-		}
+		// 	context.subscriptions.push(vs.window.onDidChangeTextEditorSelection((e) => {
+		// 		if (e.selections && e.selections.length) {
+		// 			const node = treeDataProvider.getNodeAt(e.textEditor.document.uri, e.selections[0].start);
+		// 			if (node)
+		// 				tree.reveal(node);
+		// 		}
+		// 	}));
+		// 	context.subscriptions.push(tree);
+		// 	context.subscriptions.push(treeDataProvider);
+		// }
 	});
 
 	// Handle config changes so we can reanalyze if necessary.
