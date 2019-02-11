@@ -302,10 +302,12 @@ export function activate(context: vs.ExtensionContext, isRestart: boolean = fals
 			context.subscriptions.push(new ClosingLabelsDecorations(analyzer));
 		}
 
-		if (analyzer.capabilities.supportsGetDeclerations) {
-			context.subscriptions.push(vs.languages.registerWorkspaceSymbolProvider(new DartWorkspaceSymbolProvider(analyzer)));
-		} else {
-			context.subscriptions.push(vs.languages.registerWorkspaceSymbolProvider(new LegacyDartWorkspaceSymbolProvider(analyzer)));
+		if (!isUsingLsp) {
+			if (analyzer.capabilities.supportsGetDeclerations) {
+				context.subscriptions.push(vs.languages.registerWorkspaceSymbolProvider(new DartWorkspaceSymbolProvider(analyzer)));
+			} else {
+				context.subscriptions.push(vs.languages.registerWorkspaceSymbolProvider(new LegacyDartWorkspaceSymbolProvider(analyzer)));
+			}
 		}
 
 		if (analyzer.capabilities.supportsCustomFolding && config.analysisServerFolding)
