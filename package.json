@@ -1233,7 +1233,7 @@
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
 		"webpack": "webpack --mode development",
-		"webpack-dev": "webpack --mode development --watch",
+		"webpack-with-tests": "webpack --mode development && tsc -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"lint": "tslint 'src/**/*.ts' -t verbose",
 		"test": "npm run compile && npm run write_empty_coverage && npm run remap_empty_coverage && npm run instrument && npm run test-only && npm run report_lcov && npm run report_screen",
