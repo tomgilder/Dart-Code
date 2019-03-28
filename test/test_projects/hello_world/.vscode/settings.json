@@ -7,5 +7,6 @@
 	],
 	"dart.analysisExcludedFolders": [
 		"lib/excluded"
-	]
+	],
+	"dart.sdkPath": "/Users/dantup/Dev/dart-sdk/nightly-2019-03-28"
 }
