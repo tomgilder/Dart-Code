@@ -1,18 +1,18 @@
 jobs:
-  - job: MyJob
-    displayName: My First Job
+  - job: Build
+    displayName: Build
     strategy:
       matrix:
-        StableStable:
+        Stable Dart, Stable VS Code:
           ONLY_RUN_DART_VERSION: STABLE
           ONLY_RUN_CODE_VERSION: STABLE
-        DevDev:
+        Dev Dart, Insiders VS Code:
           ONLY_RUN_DART_VERSION: DEV
           ONLY_RUN_CODE_VERSION: DEV
-        StableDev:
+        Stable Dart, Insiders VS Code:
           ONLY_RUN_DART_VERSION: STABLE
           ONLY_RUN_CODE_VERSION: DEV
-        DevStable:
+        Dev Dart, Stable VS Code:
           ONLY_RUN_DART_VERSION: DEV
           ONLY_RUN_CODE_VERSION: STABLE
     steps:
