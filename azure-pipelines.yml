@@ -1,8 +1,6 @@
 jobs:
   - job: MyJob
     displayName: My First Job
-    failOnStderr: true
-    continueOnError: true
     strategy:
       matrix:
         StableStable:
@@ -18,4 +16,7 @@ jobs:
           ONLY_RUN_DART_VERSION: DEV
           ONLY_RUN_CODE_VERSION: STABLE
     steps:
-      - script: echo Building with $(ONLY_RUN_DART_VERSION) Dart, $(ONLY_RUN_CODE_VERSION) VS Code 
+      - script: echo Building with $(ONLY_RUN_DART_VERSION) Dart, $(ONLY_RUN_CODE_VERSION) VS Code
+        failOnStderr: true
+        continueOnError: true
+    
